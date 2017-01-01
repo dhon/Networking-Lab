@@ -1,0 +1,78 @@
+THE SERVER:
+The server performs the operation requested (OC) on the two numbers it receives from the
+sender and returns the result. More specifically the server
+1. Opens a TCP socket as a server and
+2. listens to the socket
+3. Receive a request which consist of an operation code (OC) and two numbers
+4. Checks to OC and the numbers to make sure they are valid (OC can be one of +,-,*, and
+/, the numbers should be integers).
+5. If the request is not valid, it sends a return status code of 300 and the result of -1 (to be
+consistent) and goes to Step 2
+6. If the request is valid, performs the operation and returns a status code of “200” and
+the result.
+7. Goes to Step 2
+
+THE CLIENT:
+The client sends an Operation Code (OC), and two numbers.
+OC can be: Addition (+), Subtraction (-), Multiplication (*), and Division (/)
+
+To make the problem simple, your client sends two integer numbers.
+The two numbers and the OC are read from the user via keyboard. Your program
+1. Reads and displays the OC and numbers first,
+2. Opens a TCP socket to the server
+3. Sends them to the server, and waits for the results back
+4. Receives the status code and the result from the server.
+5. If the status code is OK (200), it displays the result. And if the status code is anything
+else (say 300), it warns the user of the failure.
+
+To be thorough, you will handle exceptions and anything goes wrong, it notifies the user and
+halts. You can also choose any code to represent the Operation Code. This becomes part of
+your “Application Layer Protocol”
+
+I also suggest that you write a loop so client may choose to continue or to halt the program.
+
+GENERAL:
+You should program each process (client and server) to print out informative messages along
+the way. This helps you to follow your program and debug it and me and the grader to verify
+that your program is working fine.
+
+Write your code generically, i.e. use 127.0.0.1 as you server address (assuming your client and
+server are on the same computer) so your code can be used on any computer.
+
+You can use any programming language of your choice, C, C++, Java or Python. You can use any
+environment of your choice, Unix, Linux, or Windows.
+
+Should you decide to use Java, Edition 5 and below of our textbook has examples of Java Socket
+Programming. If you need them, please see me to give you a copy of the programs.
+
+If you use C or C++, you need to submit your executables (for either Linux Windows) so we can
+test them.
+
+------------------------------------------------------------------------------------------------------
+
+I am using python 2.7 instead of 3.5.
+
+My program is known to not work 'correctly' when dividing a number non-evenly. An example of this
+would be the input / 3 2 returns 1 instead of 1.5. This is INTENDED, since the server is meant to
+only receive integers, I used the same restrictions for the client. It could have been easily changed
+by using float instead of int during calculations. The program works correctly otherwise, and I do
+not believe dropping the remainder is an error, I just felt the need to mention it as it is an oddity.
+
+Input Output
++ 3 2 status code 200: 5
+- 3 2 status code 200: 1
+* 3 2 status code 200: 6
+/ 4 2 status code 200: 2
+/ 3 2 status code 200: 1 (working as intended, see above)
+- 3 4 status code 200: -1
+* -3 -2 status code 200: 6
+* -3 2 status code 200: -6
+/ -4 -2 status code 200: 2
+/ -4 2 status code 200: -2
+/ 3 0 status code 300: -1 (cannot divide by zero)
+/ 3 -0 status code 300: -1 (cannot divide by zero)
++ 3 2 1 status code 300: -1 (too many inputs)
++ + 3 status code 300: -1 (2nd arg not int)
++ 3 + status code 300: -1 (3rd arg not int)
+3 3 3 status code 300: -1 (1st arg not OC)
+3 + 3 status code 300: -1 (1st arg not OC, 2nd arg not int)
